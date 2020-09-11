@@ -1,7 +1,19 @@
+//
+// 작성일 : 2020-09-11
+// 작성자 : 이권동
+// 코드 개요 : redis를 이용한 위치색인을 하는 모듈
+//
 var regression = require('js-regression');
 var la = (38.763189 - 32.950424)/650;
 var lo = (131.563393 - 124.773835)/650;
 
+// 함수 개요 :
+//    운전자가 존재하는지 확인하는 모듈
+// 매개변수 :
+//    client = redis client
+//    id = 운전자 ID
+//    ex_rep = 운전자 고유 ID(hash 값)
+//    req = request 객체
 module.exports.IdExist = function(client, id, ex_rep, req){
 	if( ex_rep == 0 ){
 		var hash = 0;
@@ -32,7 +44,13 @@ module.exports.IdExist = function(client, id, ex_rep, req){
 	}
 };
 
-
+// 함수 개요 :
+//    세그먼트가 변경되었는지 확인하는 
+// 매개변수 :
+//    client = redis client
+//    req = request 객체
+//    hget_rep = 현재 id의 세그먼트 위치
+//    id = 운전자 ID
 function SegChange(client, req, hget_rep, id){
 	var x = req.body.x; 
 	var y = req.body.y; 
@@ -61,6 +79,12 @@ function SegChange(client, req, hget_rep, id){
 	});
 };
 
+// 함수 개요 :
+//    현재 위치 세그먼트를 redis에서 수정하는 모듈
+// 매개변수 :
+//    client = redis client
+//    req = request 객체
+//    id = 운전자 ID
 function FindSegment(client, req, id){
 	var x = req.body.x; 
 	var y = req.body.y; 
